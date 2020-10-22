@@ -1,5 +1,5 @@
 const errorHandler = require('../middleware/errorWrapper');
-
+// const Todo  = require('../models/todo.model');
 const todos = [
     {
         id:1,
@@ -28,7 +28,7 @@ exports.getTodos = errorHandler( (req, res) => {
     }
 });
 
-exports.createTodo = errorHandler( (req, res) => {
+exports.createTodo = errorHandler( async (req, res) => {
     const name = req.body.name.trim();
     if(!name){
         throw {status: 400, msg: "Todo can\'t be empty"};
@@ -69,7 +69,7 @@ exports.getTodo = errorHandler( (req, res) => {
             success: true,
             error: "",
             data: todo
-        });
+        }); 
     }
 });
 
