@@ -15,7 +15,7 @@ class Main {
 		} else {
 			return this.generateTodos(jsonRes.data);
 		}
-    }
+    } 
 
     generateTodos(data){
         let todoCollection = '';
@@ -43,7 +43,7 @@ class Main {
 				const todoData = jsonRes.data;
 				const todo = (new TodoItem(todoData)).render();
 				document.querySelector('#todos-list').insertAdjacentHTML('beforeend', todo);
-				this.attachListenersToButtons();
+				this.attachListenersToThisButtons(todoData.id);
 				input.value = '';
 				input.placeholder = "What needs to be done?";
 			}
@@ -51,7 +51,6 @@ class Main {
 			console.log(err);
 			input.placeholder = "Todo name can\'t be empty";
 		}
-		
 	}
 
 	async updateTodo(form){
@@ -70,7 +69,7 @@ class Main {
 				throw new Error(jsonRes.error);
 			} else {
 				this.render();
-			}
+			} 
 		} catch (err) {
 			console.log(err);
 			if(err.message == "Bad Request"){
@@ -79,7 +78,7 @@ class Main {
 				document.querySelector('#error').innerText = "Todo not found";
 			}
 		}
-    } 
+    }  
     async deleteTodo(id){
 		try {
 			const response = await fetch(`${this.BASE_URL}/${id}`, {
@@ -95,7 +94,7 @@ class Main {
 		} catch (err) {
 			console.log(err)
 		}
-        
+    
     }
 
     async takeToEdit(id){
@@ -118,9 +117,22 @@ class Main {
     }
 
     
-
-	attachListenersToButtons(){
+	attachListenersToThisButtons(id){
 		// edit button
+		const editB = document.querySelector(`#e${id}`);
+		editB.addEventListener('click', ()=> {
+			this.takeToEdit(id);
+		})
+
+		// delete button
+		const deleteB = document.querySelector(`#d${id}`);
+		deleteB.addEventListener('click', ()=> {
+			this.deleteTodo(id);
+		})
+	}
+
+	attachListenersToAllButtons(){
+		// edit buttons
 		const editButtons = document.querySelectorAll('.editB');
 		editButtons.forEach(button => {
 			button.addEventListener('click', ()=> {
@@ -128,13 +140,15 @@ class Main {
 			})
 		});
 
-		// delete button
+		// delete buttons
 		const deleteButtons = document.querySelectorAll('.deleteB');
 		deleteButtons.forEach(button => {
 			button.addEventListener('click', ()=> {
 				this.deleteTodo(button.dataset.id);
 			})
 		});
+		
+
 	}
 
 	attachListenersToForm(action){
@@ -178,7 +192,7 @@ class Main {
                             </div>
 						`;
 
-		this.attachListenersToButtons();
+		this.attachListenersToAllButtons();
 		this.attachListenersToForm('create');
 						
     }

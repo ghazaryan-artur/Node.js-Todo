@@ -9,10 +9,11 @@ export default class TodoItem {
                 <li id="li${this.id}">
                     <div class="todo-field">          
                         <span>${this.name}</span>
+                        <span>${this.id}</span>
                     </div>
                     <div class="todo-buttons">
-                        <button class="editB" data-id="${this.id}">Edit</button>
-                        <button class="deleteB" data-id="${this.id}">Delete</button>
+                        <button class="editB" data-id="${this.id}" id="e${this.id}">Edit</button>
+                        <button class="deleteB" data-id="${this.id}" id="d${this.id}">Delete</button>
                     </div>
                 </li>
                 `
